@@ -3,7 +3,11 @@ package bot
 object Obfuscator {
   """Helper object to obfuscate input text"""
 
-  def obfuscate(text: String): Option[String] = {
+  val ObfuscationIndex = 0.4 // magic number, percentage to which degree text should be obfuscated
+
+  def obfuscateToken(token: String): String = {
+    val random = scala.util.Random
+
     val dict = Map("a" -> ("A", "4", "@", "^"), "b" -> ("B", "|3", "8", "|o", "13", "ß"), "c" -> ("C", "<", "(", "["),
       "d" -> ("D", "1)", "|)", "o|"), "e" -> ("E", "3", "€"), "f" -> ("F", "|=", "|\"", "PH"), "g" -> ("G", "9", "6"),
       "h" -> ("H", "|-|", "}{", ")-(", "4"), "i" -> ("I", "1", "!", "|", "/"), "j" -> ("J", "_|"),
@@ -14,14 +18,27 @@ object Obfuscator {
       "v" -> ("V", "\\/", "\\`", "\\|"), "w" -> ("W", "vv", "\\A/", "\\^/", "uu"), "x" -> ("X", "><", "%", "}{"),
       "y" -> ("Y", "`/", "'/"), "z" -> ("Z", "2", "\"/_", "(\\)"))
 
+    val obfuscatedToken = token.map(char => if (random.nextFloat() <= ObfuscationIndex)
+      char.toUpper //FIXME
+    else char)
+
+    obfuscatedToken
+  }
+
+  def obfuscateText(text: String): Option[String] = {
     try {
+
       val tokens = text.toLowerCase.split(" ").tail
-      val obfuscatedText = tokens.mkString(" ")
-      // FIXME do obfuscation
-      println(dict.values.toString())
+
+      val obfuscatedTokens = for (token <- tokens) yield obfuscateToken(token)
+      val obfuscatedText = obfuscatedTokens.mkString(" ")
+//      println(obfuscatedText)
       Some(obfuscatedText)
+
     } catch {
+
       case e: Exception => None
+
     }
   }
 }

@@ -21,7 +21,7 @@ object ObfuScalaBot extends TelegramBot with Polling with Commands {
 
   onCommand('echo) { implicit msg =>
     reply(
-      s"""${Obfuscator.obfuscate(msg.text.getOrElse("")) match {
+      s"""${Obfuscator.obfuscateText(msg.text.getOrElse("")) match {
         case Some(text) => text
         case None => "Obfuscation didn't worked"
       }}
