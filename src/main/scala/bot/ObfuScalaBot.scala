@@ -5,8 +5,13 @@ import info.mukel.telegrambot4s.api.declarative.Commands
 import info.mukel.telegrambot4s.api.{Polling, TelegramBot}
 
 object ObfuScalaBot extends TelegramBot with Polling with Commands {
+  /* Chatbot which obfuscate input text.
+  Commands:
+    /hello - greets the user
+    /echo - reply obfuscated string of input
+   */
 
-  lazy val token = botToken
+  lazy val token: String = botToken
 
   onCommand('hello) { implicit msg => // listen on hello
     reply(
