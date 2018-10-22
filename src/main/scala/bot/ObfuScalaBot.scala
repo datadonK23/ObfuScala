@@ -18,6 +18,7 @@ object ObfuScalaBot extends TelegramBot with Polling with Commands {
       s"""Hello ${msg.from.map(_.firstName).getOrElse("")},
          | I'm a simple bot, written in Scala, which obfuscates
          | ALL THE THINGS!
+         | ...which are no special characters or emojis ;)
          |
          | Let's give it a try.
          | Just type in /echo and whatever you want me to obfuscate.
@@ -28,7 +29,7 @@ object ObfuScalaBot extends TelegramBot with Polling with Commands {
     reply(
       s"""${Obfuscator.obfuscateText(msg.text.getOrElse("")) match {
         case Some(text) => text
-        case None => "Obfuscation didn't worked"
+        case None => "Obfuscation didn't worked. Maybe you've used special characters or emojis."
       }}
          | """.stripMargin
     )
